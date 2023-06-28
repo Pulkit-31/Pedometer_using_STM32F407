@@ -1,0 +1,168 @@
+Neural Network Tools for STM32AI v1.7.0 (STM.ai v8.0.0-19389)
+Created date          : 2023-04-09 00:41:44
+Parameters            : generate --name activity_detection -m D:/SEMISTERS/6 SIXTH SEMISTER/Embedded/activity_model.tflite --type tflite --compression none --verbosity 1 --workspace C:\Users\mudit\AppData\Local\Temp\mxAI_workspace71680875538009637644446851924759 --output C:\Users\mudit\.stm32cubemx\network_output --allocate-inputs --series stm32f4 --allocate-outputs
+
+Exec/report summary (generate)
+----------------------------------------------------------------------------------------------------------
+model file         :   D:\SEMISTERS\6 SIXTH SEMISTER\Embedded\activity_model.tflite                       
+type               :   tflite                                                                             
+c_name             :   activity_detection                                                                 
+compression        :   none                                                                               
+options            :   allocate-inputs, allocate-outputs                                                  
+optimization       :   balanced                                                                           
+target/series      :   stm32f4                                                                            
+workspace dir      :   C:\Users\mudit\AppData\Local\Temp\mxAI_workspace71680875538009637644446851924759   
+output dir         :   C:\Users\mudit\.stm32cubemx\network_output                                         
+model_fmt          :   float                                                                              
+model_name         :   activity_model                                                                     
+model_hash         :   f81b211ea7948e244aba19f23609d824                                                   
+params #           :   12,075 items (14.17 KiB)                                                           
+----------------------------------------------------------------------------------------------------------
+input 1/1          :   'serving_default_conv1d_input0' (domain:activations/**default**)                   
+                   :   78 items, 312 B, ai_float, float, (1,26,1,3)                                       
+output 1/1         :   'nl_8' (domain:activations/**default**)                                            
+                   :   3 items, 12 B, ai_float, float, (1,1,1,3)                                          
+macc               :   24,120                                                                             
+weights (ro)       :   48,300 B (47.17 KiB) (1 segment)                                                   
+activations (rw)   :   2,240 B (2.19 KiB) (1 segment) *                                                   
+ram (total)        :   2,240 B (2.19 KiB) = 2,240 + 0 + 0                                                 
+----------------------------------------------------------------------------------------------------------
+(*) 'input'/'output' buffers can be used from the activations buffer
+
+Model name - activity_model ['serving_default_conv1d_input0'] ['nl_8']
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+m_id   layer (type,original)                     oshape                param/size          macc                    connected to   | c_size             c_macc          c_type                     
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+0      serving_default_conv1d_input0 (Input, )   [b:1,h:26,c:3]                                                                   |                                    
+       reshape_0 (Reshape, EXPAND_DIMS)          [b:1,h:1,w:26,c:3]                               serving_default_conv1d_input0   |                                    
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+1      conv2d_1 (Conv2D, CONV_2D)                [b:1,h:1,w:24,c:16]   160/640            3,472                       reshape_0   |                    +384(+11.1%)    conv2d_of32[0]             
+       nl_1_nl (Nonlinearity, CONV_2D)           [b:1,h:1,w:24,c:16]                        384                        conv2d_1   |                    -384(-100.0%)   
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+2      reshape_2 (Reshape, RESHAPE)              [b:1,h:24,c:16]                                                        nl_1_nl   |                                    
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+3      reshape_3 (Reshape, EXPAND_DIMS)          [b:1,h:1,w:24,c:16]                                                  reshape_2   |                                    
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+4      conv2d_4 (Conv2D, CONV_2D)                [b:1,h:1,w:22,c:8]    392/1,568          8,456                       reshape_3   |                    +176(+2.1%)     conv2d_of32[1]             
+       nl_4_nl (Nonlinearity, CONV_2D)           [b:1,h:1,w:22,c:8]                         176                        conv2d_4   |                    -176(-100.0%)   
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+5      reshape_5 (Reshape, RESHAPE)              [b:1,c:176]                                                            nl_4_nl   |                                    
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+6      dense_6 (Dense, FULLY_CONNECTED)          [b:1,c:64]            11,328/11,520     11,328                       reshape_5   | +33,792(+293.3%)   +64(+0.6%)      dense_of32/nl_of32[2, 3]   
+       nl_6_nl (Nonlinearity, FULLY_CONNECTED)   [b:1,c:64]                                  64                         dense_6   |                    -64(-100.0%)    
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+7      dense_7 (Dense, FULLY_CONNECTED)          [b:1,c:3]             195/780              195                         nl_6_nl   |                                    dense_of32[4]              
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+8      nl_8 (Nonlinearity, SOFTMAX)              [b:1,c:3]                                   45                         dense_7   |                                    nl_of32[o][5]              
+------ ----------------------------------------- --------------------- --------------- -------- ------------------------------- --- ------------------ --------------- -------------------------- 
+model/c-model: macc=24,120/24,120  weights=14,508/48,300 +33,792(+232.9%) activations=--/2,240 io=--/0
+
+
+
+Generated C-graph summary
+------------------------------------------------------------------------------------------------------------------------
+model name            : activity_model
+c-name                : activity_detection
+c-node #              : 6
+c-array #             : 15
+activations size      : 2240 (1 segment)
+weights size          : 48300 (1 segment)
+macc                  : 24120
+inputs                : ['serving_default_conv1d_input0_output']
+outputs               : ['nl_8_output']
+
+C-Arrays (15)
+------ -------------------------------------- ------------- ------------------------- ------------- --------- --------- 
+c_id   name (*_array)                         item/size     domain/mem-pool           c-type        fmt       comment   
+------ -------------------------------------- ------------- ------------------------- ------------- --------- --------- 
+0      conv2d_1_output                        384/1536      activations/**default**   float         float32             
+1      conv2d_4_bias                          8/32          weights/weights           const float   float32             
+2      conv2d_4_output                        176/704       activations/**default**   float         float32             
+3      dense_6_output                         64/256        activations/**default**   float         float32             
+4      dense_6_weights                        11264/45056   weights/weights           const float   float32             
+5      nl_6_nl_output                         64/256        activations/**default**   float         float32             
+6      dense_7_output                         3/12          activations/**default**   float         float32             
+7      dense_6_bias                           64/256        weights/weights           const float   float32             
+8      nl_8_output                            3/12          activations/**default**   float         float32   /output   
+9      dense_7_weights                        192/768       weights/weights           const float   float32             
+10     dense_7_bias                           3/12          weights/weights           const float   float32             
+11     conv2d_1_weights                       144/576       weights/weights           const float   float32             
+12     conv2d_1_bias                          16/64         weights/weights           const float   float32             
+13     conv2d_4_weights                       384/1536      weights/weights           const float   float32             
+14     serving_default_conv1d_input0_output   78/312        activations/**default**   float         float32   /input    
+------ -------------------------------------- ------------- ------------------------- ------------- --------- --------- 
+
+C-Layers (6)
+------ ---------------- ---- ------------ ------- ------- ------------------------------------------ ------------------ 
+c_id   name (*_layer)   id   layer_type   macc    rom     tensors                                    shape (array id)   
+------ ---------------- ---- ------------ ------- ------- ------------------------------------------ ------------------ 
+0      conv2d_1         1    conv2d       3856    640     I: serving_default_conv1d_input0_output0   (1,1,26,3) (14)    
+                                                          W: conv2d_1_weights                        (3,16,1,3) (11)    
+                                                          W: conv2d_1_bias                           (1,1,1,16) (12)    
+                                                          O: conv2d_1_output                         (1,1,24,16) (0)    
+------ ---------------- ---- ------------ ------- ------- ------------------------------------------ ------------------ 
+1      conv2d_4         4    conv2d       8632    1568    I: conv2d_1_output                         (1,1,24,16) (0)    
+                                                          W: conv2d_4_weights                        (16,8,1,3) (13)    
+                                                          W: conv2d_4_bias                           (1,1,1,8) (1)      
+                                                          O: conv2d_4_output                         (1,1,22,8) (2)     
+------ ---------------- ---- ------------ ------- ------- ------------------------------------------ ------------------ 
+2      dense_6          6    dense        11328   45312   I: conv2d_4_output0                        (1,1,1,176) (2)    
+                                                          W: dense_6_weights                         (176,1,1,64) (4)   
+                                                          W: dense_6_bias                            (1,1,1,64) (7)     
+                                                          O: dense_6_output                          (1,1,1,64) (3)     
+------ ---------------- ---- ------------ ------- ------- ------------------------------------------ ------------------ 
+3      nl_6_nl          6    nl           64      0       I: dense_6_output                          (1,1,1,64) (3)     
+                                                          O: nl_6_nl_output                          (1,1,1,64) (5)     
+------ ---------------- ---- ------------ ------- ------- ------------------------------------------ ------------------ 
+4      dense_7          7    dense        195     780     I: nl_6_nl_output                          (1,1,1,64) (5)     
+                                                          W: dense_7_weights                         (64,1,1,3) (9)     
+                                                          W: dense_7_bias                            (1,1,1,3) (10)     
+                                                          O: dense_7_output                          (1,1,1,3) (6)      
+------ ---------------- ---- ------------ ------- ------- ------------------------------------------ ------------------ 
+5      nl_8             8    nl           45      0       I: dense_7_output                          (1,1,1,3) (6)      
+                                                          O: nl_8_output                             (1,1,1,3) (8)      
+------ ---------------- ---- ------------ ------- ------- ------------------------------------------ ------------------ 
+
+
+
+Number of operations per c-layer
+------- ------ ------------------- -------- -------------- -------- ---------- 
+c_id    m_id   name (type)              #op           type   #param   sparsity 
+------- ------ ------------------- -------- -------------- -------- ---------- 
+0       1      conv2d_1 (conv2d)      3,856   smul_f32_f32      160     0.0000 
+1       4      conv2d_4 (conv2d)      8,632   smul_f32_f32      392     0.0000 
+2       6      dense_6 (dense)       11,328   smul_f32_f32   11,328     0.0162 
+3       6      nl_6_nl (nl)              64     op_f32_f32          
+4       7      dense_7 (dense)          195   smul_f32_f32      195     0.0000 
+5       8      nl_8 (nl)                 45     op_f32_f32          
+------- ------ ------------------- -------- -------------- -------- ---------- 
+total                                24,120                  12,075     0.0152 
+
+Number of operation types
+---------------- -------- ----------- 
+operation type          #           % 
+---------------- -------- ----------- 
+smul_f32_f32       24,011       99.5% 
+op_f32_f32            109        0.5% 
+
+Complexity report (model)
+------ ---------- ------------------------- ------------------------- -------- 
+m_id   name       c_macc                    c_rom                     c_id     
+------ ---------- ------------------------- ------------------------- -------- 
+1      conv2d_1   ||||||            16.0%   |                  1.3%   [0]      
+4      conv2d_4   ||||||||||||      35.8%   |                  3.2%   [1]      
+6      dense_6    ||||||||||||||||  47.2%   ||||||||||||||||  93.8%   [2, 3]   
+7      dense_7    |                  0.8%   |                  1.6%   [4]      
+8      nl_8       |                  0.2%   |                  0.0%   [5]      
+------ ---------- ------------------------- ------------------------- -------- 
+macc=24,120 weights=48,300 act=2,240 ram_io=0
+
+Generated files (7)
+----------------------------------------------------------------------------- 
+C:\Users\mudit\.stm32cubemx\network_output\activity_detection_config.h        
+C:\Users\mudit\.stm32cubemx\network_output\activity_detection.h               
+C:\Users\mudit\.stm32cubemx\network_output\activity_detection.c               
+C:\Users\mudit\.stm32cubemx\network_output\activity_detection_data_params.h   
+C:\Users\mudit\.stm32cubemx\network_output\activity_detection_data_params.c   
+C:\Users\mudit\.stm32cubemx\network_output\activity_detection_data.h          
+C:\Users\mudit\.stm32cubemx\network_output\activity_detection_data.c          

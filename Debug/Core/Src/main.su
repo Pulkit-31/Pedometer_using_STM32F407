@@ -1,0 +1,10 @@
+../Core/Src/main.c:257:6:GPIO_Init	4	static
+../Core/Src/main.c:285:6:SPI_Init	4	static
+../Core/Src/main.c:325:10:SPI_Transmit	16	static
+../Core/Src/main.c:338:10:SPI_Receive	16	static
+../Core/Src/main.c:347:6:LIS_Write	16	static
+../Core/Src/main.c:361:6:LIS_Init	8	static
+../Core/Src/main.c:366:6:LIS_Read	8	static
+../Core/Src/main.c:377:6:TIM4_ms_Delay	16	static
+../Core/Src/main.c:387:9:Convert_To_Val	16	static
+../Core/Src/main.c:399:5:main	8	static
